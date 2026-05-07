@@ -31,7 +31,7 @@ JWT_ALGORITHM = "HS256"
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URL)
 db = client[DB_NAME]
 
-# ── Helpers ──────────────────────────────────────────
+# Ayudas
 
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
@@ -81,7 +81,7 @@ def require_role(user, role):
     if user.get("role") != role:
         raise HTTPException(status_code=403, detail="Permisos insuficientes")
 
-# ── Seed Data ────────────────────────────────────────
+# datos
 
 SEED_CATEGORIES = [
     {"slug": "bocadillos", "nombre": "Bocadillos", "nombre_en": "Sandwiches", "icono": "sandwich"},
@@ -120,7 +120,7 @@ SEED_TIMESLOTS = [
 @app.on_event("startup")
 async def startup():
     await db.users.create_index("email", unique=True)
-    # Seed admin
+    # admin
     admin_email = os.environ.get("ADMIN_EMAIL", "admin@piobite.es")
     admin_password = os.environ.get("ADMIN_PASSWORD", "admin123")
     existing = await db.users.find_one({"email": admin_email})
@@ -128,16 +128,16 @@ async def startup():
         await db.users.insert_one({"email": admin_email, "password_hash": hash_password(admin_password), "name": "Admin Cafetería", "role": "admin", "created_at": datetime.now(timezone.utc)})
     elif not verify_password(admin_password, existing["password_hash"]):
         await db.users.update_one({"email": admin_email}, {"$set": {"password_hash": hash_password(admin_password)}})
-    # Seed categories
+    # categorias
     if await db.categories.count_documents({}) == 0:
         await db.categories.insert_many(SEED_CATEGORIES)
-    # Seed products
+    # productos
     if await db.products.count_documents({}) == 0:
         await db.products.insert_many(SEED_PRODUCTS)
-    # Seed timeslots
+    # tiempos pedidos
     if await db.timeslots.count_documents({}) == 0:
         await db.timeslots.insert_many(SEED_TIMESLOTS)
-    # Seed sample orders for demo
+    # ejemplos para la demo
     if await db.orders.count_documents({}) == 0:
         await db.orders.insert_many([
             {"codigo": "PB2401", "cliente_nombre": "María García", "cliente_email": "maria@piobaroja.es", "items": [{"nombre": "Bocadillo de Jamón Serrano", "cantidad": 1, "precio": 3.50}, {"nombre": "Café con Leche", "cantidad": 1, "precio": 1.50}], "total": 5.00, "estado": "entregado", "franja_horaria": "10:00 - 10:30", "pagado": True, "fecha": datetime(2025, 4, 14, tzinfo=timezone.utc)},
@@ -156,7 +156,7 @@ async def health():
     return {"status": "ok", "app": "PíoBite API", "version": "2.0.0"}
 
 
-# ── Auth ─────────────────────────────────────────────
+# autorizacion registro con login
 
 @app.post("/api/auth/register")
 async def register(request: Request):
@@ -230,7 +230,7 @@ async def refresh(request: Request):
         raise HTTPException(status_code=401, detail="Invalid refresh token")
 
 
-# ── Categories ───────────────────────────────────────
+# categorias
 
 @app.get("/api/categorias")
 async def get_categories():
@@ -238,7 +238,7 @@ async def get_categories():
     return cats
 
 
-# ── Products ─────────────────────────────────────────
+# Poductos
 
 @app.get("/api/productos")
 async def get_products(categoria: str = None, search: str = None, saludable: str = None):
@@ -282,7 +282,7 @@ async def delete_product(product_id: str, user=Depends(get_current_user)):
     return {"ok": True}
 
 
-# ── Time Slots ───────────────────────────────────────
+# tiempos
 
 @app.get("/api/franjas-horarias")
 async def get_timeslots():
@@ -290,7 +290,7 @@ async def get_timeslots():
     return [{"id": str(s["_id"]), "hora": s["hora"], "disponible": s["ocupados"] < s["capacidad"], "capacidad": s["capacidad"], "ocupados": s["ocupados"]} for s in slots]
 
 
-# ── Orders ───────────────────────────────────────────
+# Pedidos
 
 @app.get("/api/pedidos")
 async def get_orders(user=Depends(get_current_user), estado: str = None):
@@ -316,14 +316,14 @@ async def create_order(request: Request, user=Depends(get_current_user)):
     franja_id = body.get("franja_horaria_id")
     if not items:
         return error_response("VALIDACION_FALLIDA", "El pedido debe tener al menos un producto")
-    # Validate stock
+    # Comprobar el stock actual 
     for item in items:
         prod = await db.products.find_one({"_id": ObjectId(item["producto_id"])})
         if not prod:
             return error_response("NO_ENCONTRADO", f"Producto {item['producto_id']} no encontrado", status=404)
         if prod["stock"] < item["cantidad"]:
             return error_response("STOCK_INSUFICIENTE", f"'{prod['nombre']}' sin stock suficiente (disponible: {prod['stock']})")
-    # Build order
+    # Constructor
     order_items = []
     total = 0
     for item in items:
@@ -367,7 +367,7 @@ async def verify_order(codigo: str, user=Depends(get_current_user)):
     return serialize_doc(order)
 
 
-# ── Payments (Redsys Simulation) ─────────────────────
+# Tipos de pago y seguridad redsys simulacion 
 
 @app.post("/api/pagos/iniciar")
 async def init_payment(request: Request, user=Depends(get_current_user)):
@@ -389,7 +389,7 @@ async def confirm_payment(request: Request, user=Depends(get_current_user)):
     return {"ok": True, "estado": "pendiente", "pagado": True, "codigo": order["codigo"]}
 
 
-# ── Inventory ────────────────────────────────────────
+# Inventario 
 
 @app.get("/api/inventario")
 async def get_inventory(user=Depends(get_current_user), stock_bajo: str = None):
@@ -415,7 +415,7 @@ async def update_inventory(product_id: str, request: Request, user=Depends(get_c
     return {"ok": True}
 
 
-# ── Statistics ───────────────────────────────────────
+# pocas estadisticas aqui añadiremos mas 
 
 @app.get("/api/estadisticas/resumen")
 async def get_stats_summary(user=Depends(get_current_user)):
@@ -428,18 +428,18 @@ async def get_stats_summary(user=Depends(get_current_user)):
     today_count = len(today_orders)
     today_revenue = sum(o.get("total", 0) for o in today_orders if o.get("pagado"))
     ticket_medio = round(total_revenue / max(total_orders, 1), 2)
-    # Most sold product
+    # productos que estan en tendencia o mas comprados
     product_count = {}
     for o in all_orders:
         for item in o.get("items", []):
             name = item["nombre"]
             product_count[name] = product_count.get(name, 0) + item["cantidad"]
     top_product = max(product_count, key=product_count.get) if product_count else "—"
-    # Low stock count
+    # poco stock
     low_stock = await db.products.count_documents({"$expr": {"$lte": ["$stock", "$stock_minimo"]}})
-    # Pending orders
+    # pedidos en pendiente
     pending = await db.orders.count_documents({"estado": {"$in": ["pendiente", "preparando"]}})
-    # Status breakdown
+    # estado temrinado
     estados = {"pendiente": 0, "preparando": 0, "listo": 0, "entregado": 0}
     for o in all_orders:
         if o.get("estado") in estados:
