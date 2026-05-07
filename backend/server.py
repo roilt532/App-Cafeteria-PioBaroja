@@ -23,9 +23,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-MONGO_URL = os.environ.get("MONGO_URL")
-DB_NAME = os.environ.get("DB_NAME")
-JWT_SECRET = os.environ.get("JWT_SECRET")
+MONGO_URL = os.environ.get("MONGO_URL", "mongodb://localhost:27017")
+DB_NAME = os.environ.get("DB_NAME", "piobite_cafeteria")
+JWT_SECRET = os.environ.get("JWT_SECRET", "clave_secreta_por_defecto_cambiar_en_produccion")
 JWT_ALGORITHM = "HS256"
 
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URL)
@@ -146,13 +146,7 @@ async def startup():
             {"codigo": "PB2404", "cliente_nombre": "Pedro Sánchez", "cliente_email": "pedro@piobaroja.es", "items": [{"nombre": "Café con Leche", "cantidad": 1, "precio": 1.50}, {"nombre": "Napolitana de Chocolate", "cantidad": 1, "precio": 1.80}], "total": 3.30, "estado": "listo", "franja_horaria": "10:30 - 11:00", "pagado": True, "fecha": datetime(2025, 4, 15, tzinfo=timezone.utc)},
         ])
     # Write test credentials
-    import os as _os
-    _os.makedirs("/app/memory", exist_ok=True)
-    with open("/app/memory/test_credentials.md", "w") as f:
-        f.write("# Test Credentials - PíoBite\n\n")
-        f.write(f"## Admin\n- Email: {admin_email}\n- Password: {admin_password}\n- Role: admin\n\n")
-        f.write("## Test Client\n- Email: test@piobaroja.es\n- Password: test123\n- Role: client (register first)\n\n")
-        f.write("## Auth Endpoints\n- POST /api/auth/register\n- POST /api/auth/login\n- POST /api/auth/logout\n- GET /api/auth/me\n- POST /api/auth/refresh\n")
+   # Admin: admin@piobite.es / admin123
 
 
 # ── Health ───────────────────────────────────────────
