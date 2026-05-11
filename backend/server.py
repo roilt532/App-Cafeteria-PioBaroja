@@ -174,8 +174,8 @@ async def register(request: Request):
     access = create_access_token(user_id, email)
     refresh = create_refresh_token(user_id)
     resp = JSONResponse(content={"id": user_id, "email": email, "name": name, "role": role, "access": access, "refresh": refresh})
-    resp.set_cookie("access_token", access, httponly=True, secure=False, samesite="lax", max_age=3600, path="/")
-    resp.set_cookie("refresh_token", refresh, httponly=True, secure=False, samesite="lax", max_age=604800, path="/")
+    resp.set_cookie("access_token", access, httponly=True, secure=True, samesite="lax", max_age=3600, path="/")
+    resp.set_cookie("refresh_token", refresh, httponly=True, secure=True, samesite="lax", max_age=604800, path="/")
     return resp
 
 @app.post("/api/auth/login")
@@ -190,8 +190,8 @@ async def login(request: Request):
     access = create_access_token(user_id, email)
     refresh = create_refresh_token(user_id)
     resp = JSONResponse(content={"id": user_id, "email": user["email"], "name": user["name"], "role": user["role"], "access": access, "refresh": refresh})
-    resp.set_cookie("access_token", access, httponly=True, secure=False, samesite="lax", max_age=3600, path="/")
-    resp.set_cookie("refresh_token", refresh, httponly=True, secure=False, samesite="lax", max_age=604800, path="/")
+    resp.set_cookie("access_token", access, httponly=True, secure=True, samesite="lax", max_age=3600, path="/")
+    resp.set_cookie("refresh_token", refresh, httponly=True, secure=True, samesite="lax", max_age=604800, path="/")
     return resp
 
 @app.post("/api/auth/logout")
@@ -222,7 +222,7 @@ async def refresh(request: Request):
             raise HTTPException(status_code=401, detail="User not found")
         access = create_access_token(str(user["_id"]), user["email"])
         resp = JSONResponse(content={"access": access})
-        resp.set_cookie("access_token", access, httponly=True, secure=False, samesite="lax", max_age=3600, path="/")
+        resp.set_cookie("access_token", access, httponly=True, secure=True, samesite="lax", max_age=3600, path="/")
         return resp
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Refresh token expired")
