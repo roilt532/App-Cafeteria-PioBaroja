@@ -94,7 +94,7 @@ export default function HomeScreen() {
         </div>
       </div>
 
-      <div className="px-6 md:px-12 -mt-9 max-w-4xl mx-auto" style="margin-top: 1rem;">
+      <div className="px-6 md:px-12 mt-[15px] max-w-4xl mx-auto">
         <div className="flex gap-3 overflow-x-auto hide-scrollbar pb-4" data-testid="category-filters">
           {categories.map(cat => (
             <button
