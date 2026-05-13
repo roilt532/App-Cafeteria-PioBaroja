@@ -15,9 +15,14 @@ from bson import ObjectId
 app = FastAPI(title="PíoBite API - Cafetería Pío Baroja")
 
 FRONTEND_URL = os.environ.get("APP_URL", "http://localhost:3000")
+# Busca esta parte en tu código y modifícala así:
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[FRONTEND_URL, "http://localhost:3000"],
+    allow_origins=[
+        FRONTEND_URL, 
+        "http://localhost:3000",
+        "https://powerful-rejoicing-production-982d.up.railway.app" # <--- Añade esta línea
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
