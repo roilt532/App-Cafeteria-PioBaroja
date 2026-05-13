@@ -14,8 +14,8 @@ PíoBite es una plataforma de pre-pedidos diseñada para optimizar los tiempos d
 
 La aplicación se encuentra desplegada y operativa en los siguientes enlaces:
 
-* **🌐 Frontend:** [TU_URL_AQUÍ](https://app-cafeteria-piobaroja-production.up.railway.app)
-* **⚙️ API Backend:** [TU_URL_AQUÍ](https://app-cafeteria-piobaroja-production.up.railway.app/docs)
+* **🌐 Frontend:** https://app-cafeteria-piobaroja-production.up.railway.app
+* **⚙️ API Backend:** https://app-cafeteria-piobaroja-production.up.railway.app/docs
 
 ---
 
