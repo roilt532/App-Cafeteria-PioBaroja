@@ -67,10 +67,6 @@ export default function OrderHistory() {
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="font-heading font-black text-piobite-primary">{order.total.toFixed(2)}€</span>
-                  <button className="flex items-center gap-1 text-piobite-primary font-heading font-bold text-xs hover:underline" data-testid={`reorder-btn-${order.id}`}>
-                    <RefreshCw size={12} />
-                    {t('orderHistory.reorder')}
-                  </button>
                 </div>
               </div>
             </div>
