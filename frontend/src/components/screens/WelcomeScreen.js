@@ -54,13 +54,6 @@ export default function WelcomeScreen() {
           >
             {t('welcome.register')}
           </button>
-          <button
-            onClick={() => navigate('/home')}
-            data-testid="welcome-guest-btn"
-            className="w-full py-3 text-white/60 font-body font-semibold text-sm hover:text-white transition-colors duration-300"
-          >
-            {t('welcome.guest')}
-          </button>
         </div>
       </div>
     </div>
