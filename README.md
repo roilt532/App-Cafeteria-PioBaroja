@@ -1,85 +1,59 @@
-# PíoBite - Cafetería Instituto Pío Baroja
+# 🍔 PíoBite - Cafetería Instituto Pío Baroja
 
-Aplicación de pedidos anticipados para la cafetería del Instituto Pío Baroja.  
-Pide tu comida desde el móvil y recógela sin colas.
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Railway](https://img.shields.io/badge/Railway-0B0D0E?style=for-the-badge&logo=railway&logoColor=white)
 
----
-
-## Qué es PíoBite
-
-PíoBite es una plataforma digital de pre-pedidos para la cafetería del instituto.  
-Inspirada en apps de comida rápida como McDonald's, permite a los alumnos y al personal:
-
-- Ver el catálogo de productos con precios
-- Hacer pedidos con antelación
-- Elegir la franja horaria de recogida
-- Recibir un código QR para recoger el pedido
+PíoBite es una plataforma de pre-pedidos diseñada para optimizar los tiempos de descanso en el Instituto Pío Baroja. Los usuarios pueden pedir su comida con antelación, elegir su franja horaria y recoger su pedido escaneando un código QR, eliminando las esperas en ventanilla.
 
 ---
 
-## Pantallas de la app
+## 🚀 Despliegue (Live Demo)
 
-| Pantalla | Descripción |
-|----------|-------------|
-| Bienvenida | Página inicial con acceso a login y registro |
-| Login | Inicio de sesión con rol (Cliente / Admin) |
-| Registro | Crear cuenta como alumno o personal de cafetería |
-| Catálogo | Productos organizados por categorías con búsqueda |
-| Carrito | Productos añadidos con control de cantidades |
-| Horario | Selección de franja horaria de recogida |
-| Confirmación | Código QR del pedido y resumen |
-| Historial | Lista de pedidos anteriores con estado |
-| Favoritos | Productos marcados como favoritos |
-| Perfil | Datos del usuario, cambio de idioma ES/EN |
-| Panel Admin | Gestión de pedidos para el personal de cafetería |
+La aplicación se encuentra desplegada y operativa en los siguientes enlaces:
+
+* **🌐 Frontend:** [ https://app-cafeteria-piobaroja-production.up.railway.app](https://powerful-rejoicing-production-982d.up.railway.app/)
+* **⚙️ API Backend:** https://app-cafeteria-piobaroja-production.up.railway.app/docs
 
 ---
 
-## Roles de usuario
+## ✨ Características Principales
 
-- **Alumno / Cliente**: Explora productos, hace pedidos y gestiona favoritos
-- **Personal Cafetería (Admin)**: Gestiona pedidos, verifica códigos y actualiza estados
-
----
-
-## Tecnologías
-
-- **Frontend**: React + Tailwind CSS
-- **Backend**: Python (FastAPI)
-- **Base de datos**: MongoDB
-- **QR Code**: react-qr-code
+- **Sistema Multi-rol**: Alumno/Cliente y Personal de Cafetería (Admin).
+- **Catálogo Interactivo**: Búsqueda por categorías y gestión de favoritos.
+- **Gestión de Pedidos**: Selección de franjas horarias y generación automática de **códigos QR**.
+- **Panel de Administración**: Control de flujo de pedidos en tiempo real para el personal.
+- **Multi-idioma**: Soporte completo para Español e Inglés (i18n).
+- **Diseño Responsivo**: Optimizado para dispositivos móviles, tablets y escritorio.
 
 ---
 
-## Estructura del proyecto
+## 🛠️ Tecnologías Utilizadas
 
-```
-/app
-├── backend/          → API del servidor (FastAPI)
-│   ├── server.py     → Servidor principal con endpoints y datos
-│   └── .env          → Variables de entorno
-├── frontend/         → Aplicación React
+### Frontend
+- **React 18** con **Tailwind CSS** para una interfaz moderna y rápida.
+- **Context API** para la gestión del estado global (carrito, usuario e idioma).
+- **Lucide React** para iconografía y **react-qr-code** para validaciones.
+
+### Backend
+- **Python 3.x** con **FastAPI** por su alto rendimiento y documentación automática (Swagger).
+- **MongoDB** como base de datos NoSQL escalable.
+- **Uvicorn** como servidor de producción ASGI.
+
+---
+
+## 📂 Estructura del Proyecto
+
+```bash
+├── backend/            # API Servidor (Python/FastAPI)
+│   ├── server.py       # Lógica principal y conexión a DB
+│   └── requirements.txt# Dependencias de Python
+├── frontend/           # Interfaz de Usuario (React)
 │   ├── src/
-│   │   ├── App.js                → Rutas y layout principal
-│   │   ├── context/              → Estado global (usuario, carrito, idioma)
-│   │   ├── data/                 → Traducciones ES/EN
-│   │   └── components/
-│   │       ├── screens/          → Pantallas de la app
-│   │       └── layout/           → Navegación (BottomNav, Sidebar)
-│   └── .env          → URL del backend
-└── memory/
-    └── PRD.md        → Documento de requisitos del proyecto
-```
-
----
-
-## Autores
-
-Proyecto del Instituto Pío Baroja.
-
----
-
-## Estado
-
-**Fase 1 - Prototipo** completado.  
-Navegación completa, diseño responsivo (móvil + tablet + escritorio), idiomas ES/EN.
+│   │   ├── context/    # Gestión de estado (Auth, Cart, Lang)
+│   │   ├── components/ # Componentes reutilizables y pantallas
+│   │   └── data/       # Archivos de traducción i18n
+│   └── package.json    # Dependencias de Node.js
+└── memory/             # Documentación técnica (PRD)

@@ -104,7 +104,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      <div className="px-6 md:px-12 -mt-6 max-w-4xl mx-auto">
+      <div className="px-6 md:px-12 mt-[15px] max-w-4xl mx-auto">
         <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-4" data-testid="admin-tabs">
           {tabs.map(tab => (
             <button
