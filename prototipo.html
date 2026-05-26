@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PíoBite - Prototipo App Cafetería Instituto Pío Baroja</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: #f8faf8;
+            color: #022C22;
+        }
+        h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; }
+
+        /* HEADER */
+        .hero {
+            background: linear-gradient(135deg, #00A86B 0%, #047857 50%, #065f46 100%);
+            padding: 60px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,193,7,0.15);
+            border-radius: 50%;
+            filter: blur(80px);
+        }
+        .hero-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .hero-logo-icon {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
+            font-size: 22px;
+            color: #00A86B;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        .hero-badge {
+            font-size: 11px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 900;
+            color: white;
+            letter-spacing: -2px;
+            margin-bottom: 8px;
+        }
+        .hero h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #FFC107;
+            margin-bottom: 8px;
+        }
+        .hero p { color: rgba(255,255,255,0.7); font-size: 16px; max-width: 500px; margin: 0 auto; }
+
+        /* INFO BAR */
+        .info-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 30px 20px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            flex-wrap: wrap;
+        }
+        .info-item { text-align: center; }
+        .info-item .num { font-family: 'Outfit'; font-weight: 900; font-size: 28px; color: #00A86B; }
+        .info-item .label { font-size: 12px; color: #4D7C6F; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* SECTION */
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        .section-title {
+            font-size: 32px;
+            font-weight: 900;
+            color: #022C22;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+        }
+        .section-subtitle {
+            color: #4D7C6F;
+            font-size: 15px;
+            margin-bottom: 40px;
+        }
+
+        /* PHONE MOCKUPS GRID */
+        .screens-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            align-items: start;
+        }
+        .screen-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f040;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .screen-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+        }
+
+        /* PHONE FRAME */
+        .phone-frame {
+            background: #1a1a1a;
+            border-radius: 20px;
+            margin: 20px;
+            padding: 8px;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        .phone-notch {
+            width: 120px;
+            height: 24px;
+            background: #1a1a1a;
+            border-radius: 0 0 14px 14px;
+            margin: 0 auto;
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        .phone-screen {
+            border-radius: 14px;
+            overflow: hidden;
+            position: relative;
+            min-height: 520px;
+        }
+
+        /* SCREEN DESCRIPTIONS */
+        .screen-info {
+            padding: 20px 24px 24px;
+        }
+        .screen-number {
+            display: inline-block;
+            background: #00A86B;
+            color: white;
+            font-family: 'Outfit';
+            font-weight: 800;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 8px;
+        }
+        .screen-name {
+            font-family: 'Outfit';
+            font-weight: 800;
+            font-size: 18px;
+            color: #022C22;
+            margin-bottom: 6px;
+        }
+        .screen-desc {
+            font-size: 13px;
+            color: #4D7C6F;
+            line-height: 1.5;
+        }
+
+        /* MINI SCREEN STYLES */
+        .ms { font-family: 'Outfit', sans-serif; }
+        .ms-green-bg { background: linear-gradient(135deg, #00A86B, #047857); }
+        .ms-bg { background: #FDFBF7; }
+        .ms-white { background: white; }
+        .ms-btn {
+            display: block;
+            padding: 12px;
+            border-radius: 30px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 14px;
+            margin: 6px 16px;
+        }
+        .ms-btn-primary { background: #00A86B; color: white; }
+        .ms-btn-outline { border: 2px solid #e2e8f0; color: #022C22; background: white; }
+        .ms-btn-accent { background: #FFC107; color: #022C22; }
+        .ms-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            background: #FDFBF7;
+            margin: 6px 16px;
+            font-size: 13px;
+            color: #9ca3af;
+        }
+        .ms-input-icon { width: 16px; height: 16px; background: #4D7C6F30; border-radius: 50%; flex-shrink: 0; }
+        .ms-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f030;
+            overflow: hidden;
+        }
+        .ms-pill {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .ms-pill-green { background: #00A86B; color: white; }
+        .ms-pill-gray { background: white; color: #022C22; border: 1px solid #e2e8f0; }
+        .ms-nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0 6px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+        }
+        .ms-nav-item {
+            text-align: center;
+            font-size: 9px;
+            font-weight: 700;
+            color: #4D7C6F;
+        }
+        .ms-nav-item.active { color: #00A86B; }
+        .ms-nav-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 8px;
+            margin: 0 auto 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+        }
+        .ms-product-img {
+            height: 90px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 14px;
+        }
+        .ms-tag {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        .ms-qr {
+            width: 100px;
+            height: 100px;
+            background: repeating-conic-gradient(#022C22 0% 25%, white 0% 50%) 0 0 / 10px 10px;
+            margin: 0 auto;
+            border-radius: 4px;
+        }
+        .ms-toggle {
+            display: flex;
+            background: #FDFBF7;
+            border-radius: 14px;
+            padding: 3px;
+            margin: 0 16px 10px;
+        }
+        .ms-toggle-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .ms-toggle-active { background: #00A86B; color: white; }
+        .ms-toggle-inactive { color: #4D7C6F; }
+        .ms-status {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+        .status-pending { background: #fef3c7; color: #b45309; }
+        .status-preparing { background: #dbeafe; color: #1d4ed8; }
+        .status-ready { background: #d1fae5; color: #047857; }
+        .status-delivered { background: #f1f5f9; color: #64748b; }
+
+        /* TECH TABLE */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .tech-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #e2e8f040;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+        .tech-card h4 { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+        .tech-card p { font-size: 13px; color: #4D7C6F; }
+
+        /* ROLES */
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .role-card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            border-left: 4px solid #00A86B;
+        }
+        .role-card h3 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+        .role-card p { font-size: 13px; color: #4D7C6F; margin-bottom: 12px; }
+        .role-features { list-style: none; }
+        .role-features li {
+            padding: 5px 0;
+            font-size: 13px;
+            color: #022C22;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .role-features li::before {
+            content: '✓';
+            color: #00A86B;
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: #022C22;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 13px;
+        }
+        .footer strong { color: #00A86B; }
+
+        /* FLOW SECTION */
+        .flow-steps {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .flow-step {
+            background: white;
+            border-radius: 16px;
+            padding: 16px 24px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            flex: 1;
+            min-width: 130px;
+            max-width: 180px;
+        }
+        .flow-step .step-num {
+            width: 32px;
+            height: 32px;
+            background: #00A86B;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit';
+            font-weight: 900;
+            font-size: 14px;
+            margin: 0 auto 8px;
+        }
+        .flow-step h4 { font-size: 14px; font-weight: 800; }
+        .flow-step p { font-size: 11px; color: #4D7C6F; margin-top: 2px; }
+        .flow-arrow {
+            display: flex;
+            align-items: center;
+            color: #00A86B;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 36px; }
+            .hero h2 { font-size: 16px; }
+            .info-bar { gap: 20px; }
+            .screens-grid { grid-template-columns: 1fr; }
+            .flow-arrow { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO -->
+    <header class="hero">
+        <div class="hero-logo">
+            <div class="hero-logo-icon">P</div>
+            <span class="hero-badge">Instituto Pío Baroja</span>
+        </div>
+        <h1>PíoBite</h1>
+        <h2>Cafetería Instituto Pío Baroja</h2>
+        <p>Prototipo de aplicación móvil para pedidos anticipados en la cafetería del instituto</p>
+    </header>
+
+    <!-- DATOS CLAVE -->
+    <div class="info-bar">
+        <div class="info-item"><div class="num">11</div><div class="label">Pantallas</div></div>
+        <div class="info-item"><div class="num">12</div><div class="label">Productos</div></div>
+        <div class="info-item"><div class="num">6</div><div class="label">Categorías</div></div>
+        <div class="info-item"><div class="num">2</div><div class="label">Roles</div></div>
+        <div class="info-item"><div class="num">2</div><div class="label">Idiomas</div></div>
+    </div>
+
+    <!-- FLUJO DE COMPRA -->
+    <div class="section">
+        <h2 class="section-title">Flujo de Compra</h2>
+        <p class="section-subtitle">Experiencia optimizada en 4 pasos inspirada en apps de comida rápida</p>
+        <div class="flow-steps">
+            <div class="flow-step"><div class="step-num">1</div><h4>Login</h4><p>Inicio de sesión seguro</p></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step"><div class="step-num">2</div><h4>Menú</h4><p>Explorar y añadir al carrito</p></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step"><div class="step-num">3</div><h4>Horario</h4><p>Elegir franja de recogida</p></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step"><div class="step-num">4</div><h4>Código QR</h4><p>Confirmar y recoger</p></div>
+        </div>
+    </div>
+
+    <!-- ROLES -->
+    <div class="section" style="background:white;max-width:100%;padding:50px 20px;">
+        <div style="max-width:1200px;margin:0 auto;">
+            <h2 class="section-title">Roles de Usuario</h2>
+            <p class="section-subtitle">Dos tipos de cuenta con funcionalidades diferenciadas</p>
+            <div class="roles-grid">
+                <div class="role-card">
+                    <h3>Alumno / Cliente</h3>
+                    <p>Estudiantes y personal del instituto</p>
+                    <ul class="role-features">
+                        <li>Explorar catálogo de productos</li>
+                        <li>Realizar pedidos anticipados</li>
+                        <li>Seleccionar franja horaria</li>
+                        <li>Gestionar favoritos</li>
+                        <li>Ver historial de pedidos</li>
+                        <li>Recibir código QR de recogida</li>
+                    </ul>
+                </div>
+                <div class="role-card" style="border-left-color:#FFC107;">
+                    <h3>Personal Cafetería</h3>
+                    <p>Administradores del servicio</p>
+                    <ul class="role-features">
+                        <li>Gestionar pedidos recibidos</li>
+                        <li>Actualizar estados de pedidos</li>
+                        <li>Verificar códigos de recogida</li>
+                        <li>Filtrar por estado (Pendiente, Preparando, Listo)</li>
+                        <li>Escanear códigos QR</li>
+                        <li>Panel de administración completo</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANTALLAS -->
+    <div class="section">
+        <h2 class="section-title">Pantallas del Prototipo</h2>
+        <p class="section-subtitle">Todas las vistas de la aplicación móvil</p>
+
+        <div class="screens-grid">
+
+            <!-- 1. WELCOME -->
+            <div class="screen-card">
+                <div class="phone-frame">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen ms-green-bg" style="display:flex;flex-direction:column;justify-content:space-between;padding:40px 20px 20px;">
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <div style="width:32px;height:32px;background:white;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#00A86B;font-size:14px;">P</div>
+                            <span style="font-size:9px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">Instituto Pío Baroja</span>
+                        </div>
+                        <div>
+                            <h2 style="font-size:40px;font-weight:900;color:white;letter-spacing:-2px;line-height:1;">PíoBite</h2>
+                            <p style="font-size:14px;font-weight:700;color:#FFC107;margin-top:6px;">Cafetería Instituto Pío Baroja</p>
+                            <p style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:4px;">Tu bocado favorito, listo cuando tú quieras</p>
+                        </div>
+                        <div>
+                            <div class="ms-btn" style="background:white;color:#00A86B;">Iniciar Sesión  ›</div>
+                            <div class="ms-btn" style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.2);">Crear Cuenta</div>
+                            <div style="text-align:center;color:rgba(255,255,255,0.5);font-size:11px;margin-top:6px;font-weight:600;">Explorar Menú</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-info">
+                    <span class="screen-number">PANTALLA 1</span>
+                    <h3 class="screen-name">Pantalla de Bienvenida</h3>
+                    <p class="screen-desc">Primera pantalla que ve el usuario. Ofrece opciones para iniciar sesión, crear cuenta o explorar el menú como invitado.</p>
+                </div>
+            </div>
+
+            <!-- 2. LOGIN -->
+            <div class="screen-card">
+                <div class="phone-frame">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen" style="background:#FDFBF7;">
+                        <div class="ms-green-bg" style="padding:30px 16px 20px;">
+                            <div style="color:rgba(255,255,255,0.8);font-size:11px;margin-bottom:10px;">← Volver</div>
+                            <h2 style="font-size:24px;font-weight:900;color:white;letter-spacing:-1px;">Bienvenido de vuelta</h2>
+                            <p style="font-size:12px;color:rgba(255,255,255,0.7);">Inicia sesión para hacer tu pedido</p>
+                        </div>
+                        <div style="padding:16px;margin-top:-10px;">
+                            <div class="ms-card" style="padding:16px;">
+                                <div class="ms-toggle">
+                                    <div class="ms-toggle-item ms-toggle-active">Alumno / Cliente</div>
+                                    <div class="ms-toggle-item ms-toggle-inactive">Personal Cafetería</div>
+                                </div>
+                                <div class="ms-input"><div class="ms-input-icon"></div> Correo electrónico</div>
+                                <div class="ms-input"><div class="ms-input-icon"></div> Contraseña <span style="margin-left:auto;">👁</span></div>
+                                <div style="text-align:right;padding:4px 16px;font-size:11px;color:#00A86B;font-weight:700;">¿Olvidaste tu contraseña?</div>
+                                <div class="ms-btn ms-btn-primary" style="margin-top:8px;">Iniciar Sesión</div>
+                                <div style="text-align:center;font-size:10px;color:#9ca3af;margin:10px 0;">— o —</div>
+                                <div class="ms-btn ms-btn-outline">G  Continuar con Google</div>
+                                <div style="text-align:center;font-size:11px;color:#4D7C6F;margin-top:10px;">¿No tienes cuenta? <strong style="color:#00A86B;">Regístrate</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-info">
+                    <span class="screen-number">PANTALLA 2</span>
+                    <h3 class="screen-name">Inicio de Sesión</h3>
+                    <p class="screen-desc">Login con selección de rol (Alumno/Cliente o Personal Cafetería). Incluye opción de acceso con Google y recuperación de contraseña.</p>
+                </div>
+            </div>
+
+            <!-- 3. REGISTER -->
+            <div class="screen-card">
+                <div class="phone-frame">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen" style="background:#FDFBF7;">
+                        <div class="ms-green-bg" style="padding:30px 16px 20px;">
+                            <div style="color:rgba(255,255,255,0.8);font-size:11px;margin-bottom:10px;">← Volver</div>
+                            <h2 style="font-size:24px;font-weight:900;color:white;letter-spacing:-1px;">Únete a PíoBite</h2>
+                            <p style="font-size:12px;color:rgba(255,255,255,0.7);">Crea tu cuenta y empieza a pedir</p>
+                        </div>
+                        <div style="padding:16px;margin-top:-10px;">
+                            <div class="ms-card" style="padding:16px;">
+                                <div style="font-size:10px;font-weight:700;color:#4D7C6F;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Tipo de Cuenta</div>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+                                    <div style="border:2px solid #00A86B;border-radius:14px;padding:12px;text-align:center;background:#00A86B08;">
+                                        <div style="font-size:22px;margin-bottom:4px;">🎓</div>
+                                        <div style="font-size:10px;font-weight:700;color:#00A86B;">Alumno / Cliente</div>
+                                    </div>
+                                    <div style="border:2px solid #e2e8f0;border-radius:14px;padding:12px;text-align:center;">
+                                        <div style="font-size:22px;margin-bottom:4px;">🛡</div>
+                                        <div style="font-size:10px;font-weight:700;color:#4D7C6F;">Personal Cafetería</div>
+                                    </div>
+                                </div>
+                                <div class="ms-input"><div class="ms-input-icon"></div> Nombre completo</div>
+                                <div class="ms-input"><div class="ms-input-icon"></div> Correo electrónico</div>
+                                <div class="ms-input"><div class="ms-input-icon"></div> Contraseña</div>
+                                <div class="ms-input"><div class="ms-input-icon"></div> Confirmar contraseña</div>
+                                <div class="ms-btn ms-btn-primary" style="margin-top:8px;">Crear Cuenta</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-info">
+                    <span class="screen-number">PANTALLA 3</span>
+                    <h3 class="screen-name">Registro</h3>
+                    <p class="screen-desc">Formulario de registro con selección visual de tipo de cuenta: Alumno/Cliente o Personal de Cafetería.</p>
+                </div>
+            </div>
+
+            <!-- 4. HOME / CATALOGO -->
+            <div class="screen-card">
+                <div class="phone-frame">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen" style="background:#FDFBF7;">
+                        <div class="ms-green-bg" style="padding:24px 16px 30px;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                                <div>
+                                    <p style="font-size:11px;color:rgba(255,255,255,0.7);">¡Hola, Estudiante!</p>
+                                    <h2 style="font-size:20px;font-weight:900;color:white;">PíoBite</h2>
+                                </div>
+                                <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;">🛒</div>
+                            </div>
+                            <div style="background:rgba(255,255,255,0.15);border-radius:14px;padding:10px 14px;font-size:12px;color:rgba(255,255,255,0.5);">🔍 Buscar productos...</div>
+                        </div>
+                        <div style="padding:12px 16px;">
+                            <div style="display:flex;gap:6px;margin-bottom:12px;overflow:hidden;">
+                                <span class="ms-pill ms-pill-green">🍽 Todos</span>
+                                <span class="ms-pill ms-pill-gray">🥖 Bocadillos</span>
+                                <span class="ms-pill ms-pill-gray">🥐 Bollería</span>
+                                <span class="ms-pill ms-pill-gray">☕ Bebidas</span>
+                            </div>
+                            <h3 style="font-size:16px;font-weight:800;margin-bottom:8px;">⭐ Populares</h3>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                                <div class="ms-card">
+                                    <div class="ms-product-img" style="background-image:url('https://images.unsplash.com/photo-1544723295-b451ddfb68ae?w=300');"></div>
+                                    <div style="padding:8px;">
+                                        <div style="font-size:11px;font-weight:700;">Bocadillo de Jamón</div>
+                                        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+                                            <span style="font-weight:900;color:#00A86B;font-size:14px;">3.50€</span>
+                                            <div style="width:28px;height:28px;background:#00A86B;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;font-weight:900;">+</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ms-card">
+                                    <div class="ms-product-img" style="background-image:url('https://images.unsplash.com/photo-1647972488473-ca3796499272?w=300');"></div>
+                                    <div style="padding:8px;">
+                                        <div style="font-size:11px;font-weight:700;">Café con Leche</div>
+                                        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+                                            <span style="font-weight:900;color:#00A86B;font-size:14px;">1.50€</span>
+                                            <div style="width:28px;height:28px;background:#00A86B;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;font-weight:900;">+</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ms-nav">
+                            <div class="ms-nav-item active"><div class="ms-nav-dot">🏠</div>Inicio</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">♡</div>Favoritos</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">🛒</div>Carrito</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">📋</div>Pedidos</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">👤</div>Perfil</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-info">
+                    <span class="screen-number">PANTALLA 4</span>
+                    <h3 class="screen-name">Catálogo de Productos</h3>
+                    <p class="screen-desc">Menú principal con búsqueda, filtros por categorías (Bocadillos, Bollería, Ensaladas, Bebidas), sección de populares y barra de navegación inferior.</p>
+                </div>
+            </div>
+
+            <!-- 5. CART -->
+            <div class="screen-card">
+                <div class="phone-frame">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen" style="background:#FDFBF7;display:flex;flex-direction:column;">
+                        <div style="padding:30px 16px 16px;">
+                            <div style="font-size:11px;color:#4D7C6F;margin-bottom:8px;">← Volver</div>
+                            <h2 style="font-size:24px;font-weight:900;letter-spacing:-1px;">Tu Carrito (2)</h2>
+                        </div>
+                        <div style="flex:1;padding:0 16px;">
+                            <div class="ms-card" style="padding:10px;display:flex;gap:10px;margin-bottom:8px;">
+                                <div style="width:56px;height:56px;border-radius:12px;background-image:url('https://images.unsplash.com/photo-1544723295-b451ddfb68ae?w=150');background-size:cover;flex-shrink:0;"></div>
+                                <div style="flex:1;">
+                                    <div style="font-size:11px;font-weight:700;">Bocadillo de Jamón Serrano</div>
+                                    <div style="font-weight:900;color:#00A86B;font-size:13px;">3.50€</div>
+                                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+                                        <div style="display:flex;align-items:center;gap:6px;background:#FDFBF7;border-radius:20px;padding:2px;">
+                                            <div style="width:24px;height:24px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">−</div>
+                                            <span style="font-weight:700;font-size:12px;">1</span>
+                                            <div style="width:24px;height:24px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">+</div>
+                                        </div>
+                                        <span style="color:#EF4444;font-size:14px;">🗑</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ms-card" style="padding:10px;display:flex;gap:10px;">
+                                <div style="width:56px;height:56px;border-radius:12px;background-image:url('https://images.unsplash.com/photo-1647972488473-ca3796499272?w=150');background-size:cover;flex-shrink:0;"></div>
+                                <div style="flex:1;">
+                                    <div style="font-size:11px;font-weight:700;">Café con Leche</div>
+                                    <div style="font-weight:900;color:#00A86B;font-size:13px;">1.50€</div>
+                                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+                                        <div style="display:flex;align-items:center;gap:6px;background:#FDFBF7;border-radius:20px;padding:2px;">
+                                            <div style="width:24px;height:24px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">−</div>
+                                            <span style="font-weight:700;font-size:12px;">1</span>
+                                            <div style="width:24px;height:24px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">+</div>
+                                        </div>
+                                        <span style="color:#EF4444;font-size:14px;">🗑</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="padding:12px 16px;background:white;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">
+                            <div>
+                                <div style="font-size:9px;color:#4D7C6F;text-transform:uppercase;letter-spacing:1px;">Total</div>
+                                <div style="font-weight:900;font-size:20px;">5.00€</div>
+                            </div>
+                            <div class="ms-btn ms-btn-primary" style="margin:0;padding:12px 24px;">Continuar al Pago</div>
+                        </div>
+                        <div class="ms-nav">
+                            <div class="ms-nav-item"><div class="ms-nav-dot">🏠</div>Inicio</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">♡</div>Favoritos</div>
+                            <div class="ms-nav-item active"><div class="ms-nav-dot">🛒</div>Carrito</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">📋</div>Pedidos</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">👤</div>Perfil</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-info">
+                    <span class="screen-number">PANTALLA 5</span>
+                    <h3 class="screen-name">Carrito de Compra</h3>
+                    <p class="screen-desc">Lista de productos seleccionados con controles de cantidad (+/-), opción de eliminar, total calculado automáticamente y botón para continuar al pago.</p>
+                </div>
+            </div>
+
+            <!-- 6. TIMESLOT -->
+            <div class="screen-card">
+                <div class="phone-frame">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen" style="background:#FDFBF7;display:flex;flex-direction:column;">
+                        <div style="padding:30px 16px 10px;">
+                            <div style="font-size:11px;color:#4D7C6F;margin-bottom:8px;">← Volver</div>
+                            <h2 style="font-size:24px;font-weight:900;letter-spacing:-1px;">Elige tu Horario</h2>
+                            <p style="font-size:12px;color:#4D7C6F;">Selecciona cuándo quieres recoger tu pedido</p>
+                            <div style="display:inline-flex;align-items:center;gap:6px;background:#00A86B15;padding:6px 12px;border-radius:14px;margin-top:8px;">
+                                <span style="font-size:12px;">🕐</span>
+                                <span style="font-size:11px;font-weight:700;color:#00A86B;">Hoy: Miércoles, 15 de Abril</span>
+                            </div>
+                        </div>
+                        <div style="flex:1;padding:8px 16px;">
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+                                <div style="border:2px solid #e2e8f0;border-radius:14px;padding:10px;background:white;">
+                                    <div style="display:flex;justify-content:space-between;"><span style="font-size:10px;">🕐</span><span style="font-size:9px;color:#10B981;font-weight:700;">Disponible</span></div>
+                                    <div style="font-weight:800;font-size:13px;margin-top:4px;">09:30 - 10:00</div>
+                                </div>
+                                <div style="border:2px solid #00A86B;border-radius:14px;padding:10px;background:#00A86B08;box-shadow:0 4px 15px rgba(0,168,107,0.2);">
+                                    <div style="display:flex;justify-content:space-between;"><span style="font-size:10px;">🕐</span><div style="width:18px;height:18px;background:#00A86B;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:10px;">✓</div></div>
+                                    <div style="font-weight:800;font-size:13px;margin-top:4px;color:#00A86B;">10:00 - 10:30</div>
+                                </div>
+                                <div style="border:2px solid #e2e8f0;border-radius:14px;padding:10px;background:white;">
+                                    <div style="display:flex;justify-content:space-between;"><span style="font-size:10px;">🕐</span><span style="font-size:9px;color:#10B981;font-weight:700;">Disponible</span></div>
+                                    <div style="font-weight:800;font-size:13px;margin-top:4px;">10:30 - 11:00</div>
+                                </div>
+                                <div style="border:2px solid #e2e8f0;border-radius:14px;padding:10px;background:#FDFBF7;opacity:0.5;">
+                                    <div style="display:flex;justify-content:space-between;"><span style="font-size:10px;">🕐</span><span style="font-size:9px;color:#EF4444;font-weight:700;">✕ Completo</span></div>
+                                    <div style="font-weight:800;font-size:13px;margin-top:4px;">11:30 - 12:00</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="padding:12px 16px;background:white;border-top:1px solid #e2e8f0;">
+                            <div class="ms-btn ms-btn-primary">Confirmar Pedido</div>
+                        </div>
+                        <div class="ms-nav">
+                            <div class="ms-nav-item"><div class="ms-nav-dot">🏠</div>Inicio</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">♡</div>Favoritos</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">🛒</div>Carrito</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">📋</div>Pedidos</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">👤</div>Perfil</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-info">
+                    <span class="screen-number">PANTALLA 6</span>
+                    <h3 class="screen-name">Selección de Horario</h3>
+                    <p class="screen-desc">Franjas horarias disponibles para la recogida del pedido. Muestra slots disponibles y completos. El usuario selecciona su horario preferido.</p>
+                </div>
+            </div>
+
+            <!-- 7. ORDER CONFIRMATION -->
+            <div class="screen-card">
+                <div class="phone-frame">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen" style="background:#FDFBF7;display:flex;flex-direction:column;align-items:center;padding-top:30px;">
+                        <div style="width:54px;height:54px;background:#10B98120;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:10px;">✓</div>
+                        <h2 style="font-size:22px;font-weight:900;letter-spacing:-1px;">¡Pedido Confirmado!</h2>
+                        <p style="font-size:11px;color:#4D7C6F;margin-bottom:14px;">Muestra este código en la cafetería</p>
+                        <div style="width:85%;margin:0 auto;">
+                            <div class="ms-card" style="overflow:hidden;">
+                                <div class="ms-green-bg" style="padding:14px;text-align:center;">
+                                    <div style="font-size:9px;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:1px;">Código de Pedido</div>
+                                    <div style="font-size:32px;font-weight:900;color:white;letter-spacing:-1px;">PB2401</div>
+                                </div>
+                                <div style="padding:20px;text-align:center;background:white;">
+                                    <div class="ms-qr"></div>
+                                </div>
+                                <div style="padding:0 16px 16px;">
+                                    <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #e2e8f020;">
+                                        <span style="font-size:11px;color:#4D7C6F;">🕐 Recogida</span>
+                                        <span style="font-size:12px;font-weight:700;">10:00 - 10:30</span>
+                                    </div>
+                                    <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #e2e8f0;">
+                                        <span style="font-size:11px;color:#4D7C6F;">Total</span>
+                                        <span style="font-size:16px;font-weight:900;color:#00A86B;">5.00€</span>
+                                    </div>
+                                    <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #e2e8f0;">
+                                        <span style="font-size:11px;color:#4D7C6F;">Estado</span>
+                                        <span class="ms-status status-pending">Pendiente</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width:85%;margin-top:12px;">
+                            <div class="ms-btn ms-btn-primary">🏠  Volver al Inicio</div>
+                            <div class="ms-btn ms-btn-outline">📋  Ver Mis Pedidos</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-info">
+                    <span class="screen-number">PANTALLA 7</span>
+                    <h3 class="screen-name">Confirmación de Pedido</h3>
+                    <p class="screen-desc">Código QR generado para la recogida en cafetería. Muestra el código alfanumérico, horario de recogida, total y estado del pedido.</p>
+                </div>
+            </div>
+
+            <!-- 8. ORDER HISTORY -->
+            <div class="screen-card">
+                <div class="phone-frame">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen" style="background:#FDFBF7;display:flex;flex-direction:column;">
+                        <div style="padding:30px 16px 12px;">
+                            <h2 style="font-size:24px;font-weight:900;letter-spacing:-1px;">Mis Pedidos</h2>
+                        </div>
+                        <div style="flex:1;padding:0 16px;overflow:hidden;">
+                            <div class="ms-card" style="padding:12px;margin-bottom:8px;">
+                                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                                    <div><div style="font-weight:900;font-size:14px;">PB2401</div><div style="font-size:10px;color:#4D7C6F;">2025-04-14</div></div>
+                                    <span class="ms-status status-delivered">Entregado</span>
+                                </div>
+                                <div style="border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;padding:6px 0;font-size:11px;">
+                                    <div style="display:flex;justify-content:space-between;"><span>1x Bocadillo de Jamón</span><span style="color:#4D7C6F;">3.50€</span></div>
+                                    <div style="display:flex;justify-content:space-between;"><span>1x Café con Leche</span><span style="color:#4D7C6F;">1.50€</span></div>
+                                </div>
+                                <div style="display:flex;justify-content:space-between;margin-top:6px;align-items:center;">
+                                    <span style="font-size:10px;color:#4D7C6F;">🕐 10:00-10:30</span>
+                                    <span style="font-weight:900;color:#00A86B;">5.00€</span>
+                                </div>
+                            </div>
+                            <div class="ms-card" style="padding:12px;margin-bottom:8px;">
+                                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                                    <div><div style="font-weight:900;font-size:14px;">PB2402</div><div style="font-size:10px;color:#4D7C6F;">2025-04-15</div></div>
+                                    <span class="ms-status status-preparing">Preparando</span>
+                                </div>
+                                <div style="border-top:1px solid #e2e8f0;padding:6px 0;font-size:11px;">
+                                    <div style="display:flex;justify-content:space-between;"><span>1x Ensalada César</span><span style="color:#4D7C6F;">4.50€</span></div>
+                                    <div style="display:flex;justify-content:space-between;"><span>1x Zumo de Naranja</span><span style="color:#4D7C6F;">2.00€</span></div>
+                                </div>
+                                <div style="display:flex;justify-content:space-between;margin-top:6px;align-items:center;">
+                                    <span style="font-size:10px;color:#4D7C6F;">🕐 11:00-11:30</span>
+                                    <span style="font-weight:900;color:#00A86B;">6.50€</span>
+                                </div>
+                            </div>
+                            <div class="ms-card" style="padding:12px;">
+                                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                                    <div><div style="font-weight:900;font-size:14px;">PB2403</div><div style="font-size:10px;color:#4D7C6F;">2025-04-15</div></div>
+                                    <span class="ms-status status-pending">Pendiente</span>
+                                </div>
+                                <div style="border-top:1px solid #e2e8f0;padding:6px 0;font-size:11px;">
+                                    <div style="display:flex;justify-content:space-between;"><span>2x Croissant Mixto</span><span style="color:#4D7C6F;">5.00€</span></div>
+                                </div>
+                                <div style="display:flex;justify-content:space-between;margin-top:6px;align-items:center;">
+                                    <span style="font-size:10px;color:#4D7C6F;">🕐 09:30-10:00</span>
+                                    <span style="font-weight:900;color:#00A86B;">5.00€</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ms-nav">
+                            <div class="ms-nav-item"><div class="ms-nav-dot">🏠</div>Inicio</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">♡</div>Favoritos</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">🛒</div>Carrito</div>
+                            <div class="ms-nav-item active"><div class="ms-nav-dot">📋</div>Pedidos</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">👤</div>Perfil</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-info">
+                    <span class="screen-number">PANTALLA 8</span>
+                    <h3 class="screen-name">Historial de Pedidos</h3>
+                    <p class="screen-desc">Lista completa de pedidos realizados con estados diferenciados por colores: Pendiente, Preparando, Listo y Entregado.</p>
+                </div>
+            </div>
+
+            <!-- 9. FAVORITES -->
+            <div class="screen-card">
+                <div class="phone-frame">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen" style="background:#FDFBF7;display:flex;flex-direction:column;">
+                        <div style="padding:30px 16px 12px;">
+                            <h2 style="font-size:24px;font-weight:900;letter-spacing:-1px;">Mis Favoritos</h2>
+                        </div>
+                        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 30px;">
+                            <div style="width:70px;height:70px;background:#fee2e220;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:14px;">♡</div>
+                            <h3 style="font-size:16px;font-weight:800;text-align:center;">No tienes favoritos aún</h3>
+                            <p style="font-size:12px;color:#4D7C6F;text-align:center;margin-top:4px;">Marca productos con el corazón para guardarlos aquí</p>
+                        </div>
+                        <div class="ms-nav">
+                            <div class="ms-nav-item"><div class="ms-nav-dot">🏠</div>Inicio</div>
+                            <div class="ms-nav-item active"><div class="ms-nav-dot">♡</div>Favoritos</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">🛒</div>Carrito</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">📋</div>Pedidos</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">👤</div>Perfil</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-info">
+                    <span class="screen-number">PANTALLA 9</span>
+                    <h3 class="screen-name">Favoritos</h3>
+                    <p class="screen-desc">Lista de productos marcados como favoritos para acceso rápido. Permite añadir directamente al carrito desde esta pantalla.</p>
+                </div>
+            </div>
+
+            <!-- 10. PROFILE -->
+            <div class="screen-card">
+                <div class="phone-frame">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen" style="background:#FDFBF7;display:flex;flex-direction:column;">
+                        <div class="ms-green-bg" style="padding:30px 16px 36px;">
+                            <h2 style="font-size:24px;font-weight:900;color:white;letter-spacing:-1px;margin-bottom:12px;">Mi Perfil</h2>
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div style="width:44px;height:44px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid rgba(255,255,255,0.3);font-weight:900;color:white;font-size:18px;">E</div>
+                                <div>
+                                    <div style="font-weight:700;color:white;font-size:15px;">Estudiante</div>
+                                    <div style="font-size:11px;color:rgba(255,255,255,0.7);">estudiante@piobaroja.es</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="flex:1;padding:0 16px;margin-top:-14px;">
+                            <div class="ms-card">
+                                <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #e2e8f030;">
+                                    <div style="display:flex;align-items:center;gap:10px;">
+                                        <div style="width:32px;height:32px;background:#00A86B10;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;">🌐</div>
+                                        <span style="font-weight:700;font-size:12px;">Idioma</span>
+                                    </div>
+                                    <span style="font-size:10px;color:#4D7C6F;">ES → EN ›</span>
+                                </div>
+                                <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #e2e8f030;">
+                                    <div style="display:flex;align-items:center;gap:10px;">
+                                        <div style="width:32px;height:32px;background:#00A86B10;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;">🔔</div>
+                                        <span style="font-weight:700;font-size:12px;">Notificaciones</span>
+                                    </div>
+                                    <span style="font-size:10px;color:#4D7C6F;">›</span>
+                                </div>
+                                <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #e2e8f030;">
+                                    <div style="display:flex;align-items:center;gap:10px;">
+                                        <div style="width:32px;height:32px;background:#00A86B10;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;">❓</div>
+                                        <span style="font-weight:700;font-size:12px;">Ayuda y Soporte</span>
+                                    </div>
+                                    <span style="font-size:10px;color:#4D7C6F;">›</span>
+                                </div>
+                                <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;">
+                                    <div style="display:flex;align-items:center;gap:10px;">
+                                        <div style="width:32px;height:32px;background:#00A86B10;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;">📄</div>
+                                        <span style="font-weight:700;font-size:12px;">Términos y Condiciones</span>
+                                    </div>
+                                    <span style="font-size:10px;color:#4D7C6F;">›</span>
+                                </div>
+                            </div>
+                            <div class="ms-card" style="margin-top:10px;padding:14px;text-align:center;border:1px solid #EF444430;color:#EF4444;font-weight:700;font-size:13px;">↪ Cerrar Sesión</div>
+                            <div style="text-align:center;font-size:10px;color:#4D7C6F;margin-top:10px;">Versión 1.0.0</div>
+                        </div>
+                        <div class="ms-nav">
+                            <div class="ms-nav-item"><div class="ms-nav-dot">🏠</div>Inicio</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">♡</div>Favoritos</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">🛒</div>Carrito</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">📋</div>Pedidos</div>
+                            <div class="ms-nav-item active"><div class="ms-nav-dot">👤</div>Perfil</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-info">
+                    <span class="screen-number">PANTALLA 10</span>
+                    <h3 class="screen-name">Perfil de Usuario</h3>
+                    <p class="screen-desc">Información del usuario, cambio de idioma (Español/English), notificaciones, ayuda, términos y opción de cerrar sesión.</p>
+                </div>
+            </div>
+
+            <!-- 11. ADMIN -->
+            <div class="screen-card">
+                <div class="phone-frame">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen" style="background:#FDFBF7;display:flex;flex-direction:column;">
+                        <div class="ms-green-bg" style="padding:24px 16px 20px;">
+                            <div style="font-size:11px;color:rgba(255,255,255,0.8);margin-bottom:6px;">← Volver</div>
+                            <h2 style="font-size:20px;font-weight:900;color:white;letter-spacing:-1px;">Panel de Administración</h2>
+                            <p style="font-size:11px;color:rgba(255,255,255,0.7);">Gestión de Pedidos</p>
+                            <div style="background:rgba(255,255,255,0.1);border-radius:14px;padding:10px;margin-top:10px;">
+                                <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.8);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Verificar Código</div>
+                                <div style="display:flex;gap:6px;">
+                                    <div style="flex:1;background:rgba(255,255,255,0.15);border-radius:10px;padding:8px 10px;font-size:11px;color:rgba(255,255,255,0.4);">🔍 Introduce el código</div>
+                                    <div style="background:#FFC107;color:#022C22;font-weight:700;font-size:11px;padding:8px 14px;border-radius:10px;">Verificar</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="padding:8px 16px;">
+                            <div style="display:flex;gap:4px;margin-bottom:10px;overflow:hidden;">
+                                <span class="ms-pill ms-pill-green" style="font-size:10px;">Todos <span style="opacity:0.7;">4</span></span>
+                                <span class="ms-pill ms-pill-gray" style="font-size:10px;">Pendientes <span style="opacity:0.5;">1</span></span>
+                                <span class="ms-pill ms-pill-gray" style="font-size:10px;">Preparando <span style="opacity:0.5;">1</span></span>
+                            </div>
+                            <div class="ms-card" style="padding:10px;margin-bottom:6px;">
+                                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                                    <div>
+                                        <span style="font-weight:900;font-size:14px;">PB2402</span>
+                                        <span class="ms-status status-preparing" style="margin-left:6px;">Preparando</span>
+                                    </div>
+                                    <span style="font-weight:900;color:#00A86B;font-size:13px;">6.50€</span>
+                                </div>
+                                <div style="font-size:11px;color:#4D7C6F;margin-bottom:4px;">María García</div>
+                                <div style="background:#FDFBF7;border-radius:8px;padding:6px 8px;font-size:11px;margin-bottom:6px;">1x Ensalada César · 1x Zumo de Naranja</div>
+                                <div style="text-align:right;">
+                                    <span style="background:#00A86B;color:white;padding:6px 14px;border-radius:20px;font-size:10px;font-weight:700;">Listo</span>
+                                </div>
+                            </div>
+                            <div class="ms-card" style="padding:10px;">
+                                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                                    <div>
+                                        <span style="font-weight:900;font-size:14px;">PB2403</span>
+                                        <span class="ms-status status-pending" style="margin-left:6px;">Pendiente</span>
+                                    </div>
+                                    <span style="font-weight:900;color:#00A86B;font-size:13px;">5.00€</span>
+                                </div>
+                                <div style="font-size:11px;color:#4D7C6F;margin-bottom:4px;">Carlos López</div>
+                                <div style="background:#FDFBF7;border-radius:8px;padding:6px 8px;font-size:11px;margin-bottom:6px;">2x Croissant Mixto</div>
+                                <div style="text-align:right;">
+                                    <span style="background:#00A86B;color:white;padding:6px 14px;border-radius:20px;font-size:10px;font-weight:700;">Preparar</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ms-nav" style="margin-top:auto;">
+                            <div class="ms-nav-item"><div class="ms-nav-dot">🏠</div>Inicio</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">♡</div>Favoritos</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">🛒</div>Carrito</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">📋</div>Pedidos</div>
+                            <div class="ms-nav-item"><div class="ms-nav-dot">👤</div>Perfil</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-info">
+                    <span class="screen-number">PANTALLA 11</span>
+                    <h3 class="screen-name">Panel de Administración</h3>
+                    <p class="screen-desc">Interfaz para el personal de cafetería. Permite verificar códigos de pedido, filtrar por estado y actualizar pedidos (Preparar → Listo → Entregar).</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- PRODUCTOS -->
+    <div class="section" style="background:white;max-width:100%;padding:50px 20px;">
+        <div style="max-width:1200px;margin:0 auto;">
+            <h2 class="section-title">Catálogo de Productos</h2>
+            <p class="section-subtitle">12 productos organizados en 6 categorías</p>
+            <div class="tech-grid" style="grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));">
+                <div class="tech-card"><h4>🥖 Bocadillo Jamón Serrano</h4><p>3.50€</p></div>
+                <div class="tech-card"><h4>🥖 Bocadillo de Tortilla</h4><p>3.00€</p></div>
+                <div class="tech-card"><h4>🥖 Sandwich Vegetal</h4><p>3.20€ · Saludable</p></div>
+                <div class="tech-card"><h4>🥖 Tostada con Tomate</h4><p>1.80€ · Saludable</p></div>
+                <div class="tech-card"><h4>🥐 Croissant Mixto</h4><p>2.50€</p></div>
+                <div class="tech-card"><h4>🥐 Napolitana Chocolate</h4><p>1.80€</p></div>
+                <div class="tech-card"><h4>🥗 Ensalada César</h4><p>4.50€ · Saludable</p></div>
+                <div class="tech-card"><h4>☕ Café con Leche</h4><p>1.50€</p></div>
+                <div class="tech-card"><h4>☕ Café Solo</h4><p>1.20€</p></div>
+                <div class="tech-card"><h4>🧃 Zumo de Naranja</h4><p>2.00€ · Saludable</p></div>
+                <div class="tech-card"><h4>🧃 Agua Mineral</h4><p>1.00€ · Saludable</p></div>
+                <div class="tech-card"><h4>🧃 Batido de Chocolate</h4><p>2.50€</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TECNOLOGIAS -->
+    <div class="section">
+        <h2 class="section-title">Tecnologías Utilizadas</h2>
+        <p class="section-subtitle">Stack tecnológico del prototipo</p>
+        <div class="tech-grid">
+            <div class="tech-card"><h4>React</h4><p>Framework frontend para interfaces de usuario</p></div>
+            <div class="tech-card"><h4>Tailwind CSS</h4><p>Framework de estilos para diseño responsivo</p></div>
+            <div class="tech-card"><h4>FastAPI (Python)</h4><p>Backend y API REST del servidor</p></div>
+            <div class="tech-card"><h4>MongoDB</h4><p>Base de datos NoSQL para almacenamiento</p></div>
+            <div class="tech-card"><h4>React QR Code</h4><p>Generación de códigos QR para pedidos</p></div>
+            <div class="tech-card"><h4>React Router</h4><p>Navegación entre pantallas de la app</p></div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p><strong>PíoBite</strong> — Cafetería Instituto Pío Baroja</p>
+        <p style="margin-top:6px;">Prototipo v1.0.0 · Fase 1</p>
+    </footer>
+
+</body>
+</html>
